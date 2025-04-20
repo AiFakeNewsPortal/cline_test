@@ -8,16 +8,16 @@
   
   <script setup lang="ts">
   import { ref } from 'vue';
-  import { QrcodeStream } from 'vue-qrcode-reader'
+  import { QrcodeStream } from 'vue-qrcode-reader';
   
-  const decodedContent = ref(null);
-  const error = ref(null);
-
-  function onDecode(content) {
+  const decodedContent = ref<string | null>(null);
+  const error = ref<Error | null>(null);
+  
+  function onDecode(content: string) {
     decodedContent.value = content;
   }
-
-  function onInit(promise) {
+  
+  function onInit(promise: Promise<void>) {
     promise.catch(err => {
       if (err.name === 'NotAllowedError') {
         alert('Please allow camera access to scan QR codes.');
@@ -27,14 +27,19 @@
       error.value = err;
     });
   }
-
+  
   function retryInitialization() {
     error.value = null;
-    // Assume there is a method to restart the QR code stream
-    restartQrCodeStream();
+    // Restart the QR code stream
+    const qrcodeStream = document.querySelector('qrcode-stream');
+    if (qrcodeStream) {
+      qrcodeStream.stop();
+      qrcodeStream.start();
+    }
   }
   </script>
   
   <style scoped>
   /* Add any styles you need here */
   </style>
+  

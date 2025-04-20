@@ -9,7 +9,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import QrScanner from './QrCodeScanner.vue'; 
+import QrScanner from './QrScanner.vue'; 
 
 const showScanner = ref(false);
 
