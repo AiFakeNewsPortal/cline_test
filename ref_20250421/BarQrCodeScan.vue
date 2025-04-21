@@ -1,6 +1,8 @@
 <template>
   <div>
+    <button @click="toggleScanner">{{ scannerActive ? 'Stop Scanner' : 'Start Scanner' }}</button>
     <vue3-barcode-qrcode-reader
+      v-if="scannerActive"
       @decode="onDecode"
       @error="onError"
     />
@@ -20,6 +22,7 @@ export default defineComponent({
   },
   setup() {
     const decodedText = ref<string | null>(null);
+    const scannerActive = ref<boolean>(false);
 
     const onDecode = (text: string) => {
       decodedText.value = text;
@@ -29,10 +32,16 @@ export default defineComponent({
       console.error(error);
     };
 
+    const toggleScanner = () => {
+      scannerActive.value = !scannerActive.value;
+    };
+
     return {
       decodedText,
+      scannerActive,
       onDecode,
-      onError
+      onError,
+      toggleScanner
     };
   }
 });
